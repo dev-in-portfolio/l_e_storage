@@ -1,0 +1,108 @@
+{
+  "project": "Lulu & Ellie",
+  "series": "A Original Adventure",
+  "asset_type": "front_cover",
+  "count": 20,
+  "files": [
+    {
+      "book_number": 1,
+      "output_file": "book-01-front-cover.png",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 1/For Later/Original_Cover.png"
+    },
+    {
+      "book_number": 2,
+      "output_file": "book-02-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 2/For_Later/cover_assets/book2_full_wrap_cover_300dpi.jpg"
+    },
+    {
+      "book_number": 3,
+      "output_file": "book-03-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 3/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 4,
+      "output_file": "book-04-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 4/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 5,
+      "output_file": "book-05-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 5/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 6,
+      "output_file": "book-06-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 6/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 7,
+      "output_file": "book-07-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 7/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 8,
+      "output_file": "book-08-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 8/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 9,
+      "output_file": "book-09-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 9/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 10,
+      "output_file": "book-10-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 10/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 11,
+      "output_file": "book-11-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 11/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 12,
+      "output_file": "book-12-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 12/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 13,
+      "output_file": "book-13-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 13/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 14,
+      "output_file": "book-14-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 14/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 15,
+      "output_file": "book-15-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 15/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 16,
+      "output_file": "book-16-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 16/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 17,
+      "output_file": "book-17-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 17/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 18,
+      "output_file": "book-18-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 18/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 19,
+      "output_file": "book-19-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 19/For_Later/front_cover_panel.jpg"
+    },
+    {
+      "book_number": 20,
+      "output_file": "book-20-front-cover.jpg",
+      "source_file": "/storage/emulated/0/Download/Lulu & Ellie/Lulu & Ellie Adventures/A Original Adventure/Book 20/For_Later/front_cover_panel.jpg"
+    }
+  ]
+}

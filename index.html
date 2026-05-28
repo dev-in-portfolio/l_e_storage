@@ -24,22 +24,22 @@
           <h1>Multi-collection storage</h1>
           <p class="lede">
             A clean landing page for the storage hub. The repository currently
-            serves the `Original Adventure` and `Codex` collections, and it is
+            serves the `Original Adventure` and `General` collections, and it is
             set up to grow into additional Lulu & Ellie collections later.
           </p>
           <div class="hero__meta">
             <span>20 Original Adventure books</span>
-            <span>20 Codex books</span>
-            <span>9 Codex general clips</span>
+            <span>20 book clips</span>
+            <span>9 General clips</span>
           </div>
         </div>
 
         <aside class="status-card">
           <p class="status-card__label">Current root</p>
-          <code>LULU & ELLIE STORAGE HUB/Original Adventure/</code>
+          <code>LULU & ELLIE STORAGE HUB/</code>
           <p class="status-card__note">
-            Book folders live alongside an Organization folder for manifests and
-            support files.
+            Original Adventure holds the book folders. General holds the shared
+            clips and support files.
           </p>
         </aside>
       </section>
@@ -47,21 +47,20 @@
       <section class="panel">
         <div class="panel__header">
           <h2>Original Adventure</h2>
-          <p>Book folders with paired cover and fun-page assets.</p>
+          <p>Book folders with front cover, fun-page, and book clip assets.</p>
         </div>
         <div id="original-adventure" class="grid"></div>
       </section>
 
       <section class="panel">
         <div class="panel__header">
-          <h2>Codex</h2>
-          <p>Book folders for the Codex media batch plus the general clip set.</p>
+          <h2>General</h2>
+          <p>Shared clips and support files for assets that do not belong to a single book folder.</p>
         </div>
-        <div id="codex-books" class="grid"></div>
         <div class="panel__subheader">
           <h3>General clips</h3>
         </div>
-        <div id="codex-general" class="support"></div>
+        <div id="general-clips" class="support"></div>
       </section>
 
       <section class="panel panel--support">
@@ -75,64 +74,37 @@
           <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/front_covers_manifest.json">Original Adventure front_covers_manifest.json</a>
           <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_manifest.csv">Original Adventure fun_pages_manifest.csv</a>
           <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_contact_sheet.jpg">Original Adventure fun_pages_contact_sheet.jpg</a>
+          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/General/Organization/general_asset_map.csv">General general_asset_map.csv</a>
         </div>
       </section>
     </main>
 
     <script>
-      const makeBookCards = (basePath, kind, count, extResolver) =>
-        Array.from({ length: count }, (_, index) => {
-        const bookNumber = index + 1;
-        return {
-          number: bookNumber,
-          path: `${basePath}/Book_${bookNumber}/`,
-          frontCover: extResolver(bookNumber),
-          label: `Book ${bookNumber}`,
-          kind,
-        };
-      });
+      const originalAdventureRoot = "./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure";
+      const generalRoot = "./LULU%20%26%20ELLIE%20STORAGE%20HUB/General";
 
-      const renderCards = (booksRoot, books, extraLine) => {
-        booksRoot.innerHTML = books
-        .map(
-          (book) => `
+      const originalAdventureBooks = Array.from({ length: 20 }, (_, index) => {
+        const bookNumber = index + 1;
+        const frontCoverExt = bookNumber === 1 ? "png" : "jpg";
+
+        return `
             <article class="book-card">
               <div class="book-card__top">
-                <p class="book-card__label">${book.label}</p>
-                <a class="book-card__open" href="${book.path}">Open folder</a>
+                <p class="book-card__label">Book ${bookNumber}</p>
+                <a class="book-card__open" href="${originalAdventureRoot}/Book_${bookNumber}/">Open folder</a>
               </div>
               <ul class="book-card__files">
-                <li><span>${book.kind}</span><code>${book.frontCover}</code></li>
-                ${extraLine ? `<li><span>${extraLine.label}</span><code>${extraLine.value(book.number)}</code></li>` : ""}
+                <li><span>Front cover</span><code>book_${bookNumber}_front_cover.${frontCoverExt}</code></li>
+                <li><span>Fun page</span><code>book_${bookNumber}_fun_book.png</code></li>
+                <li><span>Book clip</span><code>book_${bookNumber}.mp4</code></li>
               </ul>
             </article>
-          `
-        )
-        .join("");
-      };
-
-      const originalAdventureBooks = makeBookCards(
-        "./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure",
-        "Front cover",
-        20,
-        (bookNumber) => `book_${bookNumber}_front_cover.${bookNumber === 1 ? "png" : "jpg"}`
-      );
-
-      renderCards(document.getElementById("original-adventure"), originalAdventureBooks, {
-        label: "Fun page",
-        value: (bookNumber) => `book_${bookNumber}_fun_book.png`,
+          `;
       });
 
-      const codexBooks = makeBookCards(
-        "./LULU%20%26%20ELLIE%20STORAGE%20HUB/Codex",
-        "Video",
-        20,
-        (bookNumber) => `book_${bookNumber}.mp4`
-      );
+      document.getElementById("original-adventure").innerHTML = originalAdventureBooks.join("");
 
-      renderCards(document.getElementById("codex-books"), codexBooks);
-
-      const codexGeneral = [
+      const generalFiles = [
         "1006720010.mp4",
         "1024978004.mp4",
         "12175027.mp4",
@@ -144,10 +116,10 @@
         "567657757.mp4",
       ];
 
-      document.getElementById("codex-general").innerHTML = codexGeneral
+      document.getElementById("general-clips").innerHTML = generalFiles
         .map(
           (file) => `
-            <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Codex/General/${file}">${file}</a>
+            <a href="${generalRoot}/${file}">${file}</a>
           `
         )
         .join("");

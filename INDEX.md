@@ -4,14 +4,14 @@
 
 - `README.md` - hub overview
 - `index.html` - storage hub landing page
-- `Original Adventure/` - current Lulu & Ellie asset set
+- `LULU & ELLIE STORAGE HUB/` - current storage hub root
 
-## Original Adventure
+## LULU & ELLIE STORAGE HUB / Original Adventure
 
 - `Book_1/` through `Book_20/` - paired book assets
 - `Organization/` - support files and manifests
 
-Future collections can be added at the root alongside `Original Adventure/`.
+Future collections can be added beside `Original Adventure/` under the hub folder.
 
 ## Book folder contents
 

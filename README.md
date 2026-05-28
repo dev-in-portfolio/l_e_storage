@@ -1,12 +1,14 @@
-# Lulu & Ellie Storage
+# LULU & ELLIE STORAGE HUB
 
-This repository stores the media set for Lulu & Ellie, starting with `Origunal Adventure`.
+This repository stores the media hub for Lulu & Ellie, starting with `Origunal Adventure`.
 
 ## Layout
 
 - `Origunal Adventure/`
   - `Book_1/` through `Book_20/`
   - `Organization/`
+
+Future Lulu & Ellie collections can be added beside `Origunal Adventure` under the same hub.
 
 ## Book folders
 
@@ -27,4 +29,4 @@ The `Organization/` folder holds support files for the storage set:
 ## Notes
 
 - `Book_1` uses a PNG front cover because that is the source format.
-- The repo is intentionally organized for asset storage first, with no app code yet.
+- The repo is intentionally organized for asset storage first, with a small static landing page.

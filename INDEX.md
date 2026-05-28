@@ -2,13 +2,16 @@
 
 ## Root
 
-- `README.md` - project overview
+- `README.md` - hub overview
+- `index.html` - storage hub landing page
 - `Origunal Adventure/` - current Lulu & Ellie asset set
 
 ## Origunal Adventure
 
 - `Book_1/` through `Book_20/` - paired book assets
 - `Organization/` - support files and manifests
+
+Future collections can be added at the root alongside `Origunal Adventure/`.
 
 ## Book folder contents
 

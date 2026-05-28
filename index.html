@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lulu & Ellie Storage</title>
+    <meta
+      name="description"
+      content="Storage landing page for Lulu & Ellie Origunal Adventure assets."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="hero__copy">
+          <p class="eyebrow">Lulu & Ellie storage</p>
+          <h1>Origunal Adventure asset hub</h1>
+          <p class="lede">
+            A clean landing page for the current storage set. The repository
+            serves the 20 book folders plus the organization files that support
+            them.
+          </p>
+          <div class="hero__meta">
+            <span>20 books</span>
+            <span>44 tracked files</span>
+            <span>1 collection</span>
+          </div>
+        </div>
+
+        <aside class="status-card">
+          <p class="status-card__label">Current root</p>
+          <code>Origunal Adventure/</code>
+          <p class="status-card__note">
+            Book folders live alongside an Organization folder for manifests and
+            support files.
+          </p>
+        </aside>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <h2>Book folders</h2>
+          <p>Each book folder contains the paired assets for that number.</p>
+        </div>
+        <div id="books" class="grid"></div>
+      </section>
+
+      <section class="panel panel--support">
+        <div class="panel__header">
+          <h2>Organization files</h2>
+          <p>Support files that describe and index the current storage set.</p>
+        </div>
+
+        <div class="support">
+          <a href="./Origunal%20Adventure/Organization/book_asset_map.csv">book_asset_map.csv</a>
+          <a href="./Origunal%20Adventure/Organization/front_covers_manifest.json">front_covers_manifest.json</a>
+          <a href="./Origunal%20Adventure/Organization/fun_pages_manifest.csv">fun_pages_manifest.csv</a>
+          <a href="./Origunal%20Adventure/Organization/fun_pages_contact_sheet.jpg">fun_pages_contact_sheet.jpg</a>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const books = Array.from({ length: 20 }, (_, index) => {
+        const bookNumber = index + 1;
+        return {
+          number: bookNumber,
+          path: `./Origunal%20Adventure/Book_${bookNumber}/`,
+          frontCover: `book_${bookNumber}_front_cover.${bookNumber === 1 ? "png" : "jpg"}`,
+          funBook: `book_${bookNumber}_fun_book.png`,
+          label: `Book ${bookNumber}`,
+        };
+      });
+
+      const booksRoot = document.getElementById("books");
+      booksRoot.innerHTML = books
+        .map(
+          (book) => `
+            <article class="book-card">
+              <div class="book-card__top">
+                <p class="book-card__label">${book.label}</p>
+                <a class="book-card__open" href="${book.path}">Open folder</a>
+              </div>
+              <ul class="book-card__files">
+                <li><span>Front cover</span><code>${book.frontCover}</code></li>
+                <li><span>Fun page</span><code>${book.funBook}</code></li>
+              </ul>
+            </article>
+          `
+        )
+        .join("");
+    </script>
+  </body>
+</html>

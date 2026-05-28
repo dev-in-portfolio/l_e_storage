@@ -1,14 +1,14 @@
 # LULU & ELLIE STORAGE HUB
 
-This repository stores the media hub for Lulu & Ellie, starting with `Origunal Adventure`.
+This repository stores the media hub for Lulu & Ellie, starting with `Original Adventure`.
 
 ## Layout
 
-- `Origunal Adventure/`
+- `Original Adventure/`
   - `Book_1/` through `Book_20/`
   - `Organization/`
 
-Future Lulu & Ellie collections can be added beside `Origunal Adventure` under the same hub.
+Future Lulu & Ellie collections can be added beside `Original Adventure` under the same hub.
 
 ## Book folders
 

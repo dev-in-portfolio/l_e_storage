@@ -162,6 +162,16 @@ h1 {
   max-width: 52ch;
 }
 
+.panel__subheader {
+  margin: 18px 0 12px;
+}
+
+.panel__subheader h3 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));

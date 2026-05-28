@@ -6,7 +6,7 @@
     <title>LULU & ELLIE STORAGE HUB</title>
     <meta
       name="description"
-      content="Storage hub for Lulu & Ellie assets, starting with Original Adventure."
+      content="Storage hub for Lulu & Ellie assets, organized as a multi-collection hub."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,17 +21,16 @@
       <section class="hero">
         <div class="hero__copy">
           <p class="eyebrow">LULU & ELLIE STORAGE HUB</p>
-          <h1>Original Adventure assets</h1>
+          <h1>Multi-collection storage</h1>
           <p class="lede">
             A clean landing page for the storage hub. The repository currently
-            serves the 20 book folders for Original Adventure plus the support
-            files that organize them, and it is set up to grow into additional
-            Lulu & Ellie collections later.
+            serves the `Original Adventure` and `Codex` collections, and it is
+            set up to grow into additional Lulu & Ellie collections later.
           </p>
           <div class="hero__meta">
-            <span>20 books</span>
-            <span>44 tracked files</span>
-            <span>1 collection</span>
+            <span>20 Original Adventure books</span>
+            <span>20 Codex books</span>
+            <span>9 Codex general clips</span>
           </div>
         </div>
 
@@ -47,10 +46,22 @@
 
       <section class="panel">
         <div class="panel__header">
-          <h2>Book folders</h2>
-          <p>Each book folder contains the paired assets for that number.</p>
+          <h2>Original Adventure</h2>
+          <p>Book folders with paired cover and fun-page assets.</p>
         </div>
-        <div id="books" class="grid"></div>
+        <div id="original-adventure" class="grid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <h2>Codex</h2>
+          <p>Book folders for the Codex media batch plus the general clip set.</p>
+        </div>
+        <div id="codex-books" class="grid"></div>
+        <div class="panel__subheader">
+          <h3>General clips</h3>
+        </div>
+        <div id="codex-general" class="support"></div>
       </section>
 
       <section class="panel panel--support">
@@ -60,28 +71,29 @@
         </div>
 
         <div class="support">
-          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/book_asset_map.csv">book_asset_map.csv</a>
-          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/front_covers_manifest.json">front_covers_manifest.json</a>
-          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_manifest.csv">fun_pages_manifest.csv</a>
-          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_contact_sheet.jpg">fun_pages_contact_sheet.jpg</a>
+          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/book_asset_map.csv">Original Adventure book_asset_map.csv</a>
+          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/front_covers_manifest.json">Original Adventure front_covers_manifest.json</a>
+          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_manifest.csv">Original Adventure fun_pages_manifest.csv</a>
+          <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Organization/fun_pages_contact_sheet.jpg">Original Adventure fun_pages_contact_sheet.jpg</a>
         </div>
       </section>
     </main>
 
     <script>
-      const books = Array.from({ length: 20 }, (_, index) => {
+      const makeBookCards = (basePath, kind, count, extResolver) =>
+        Array.from({ length: count }, (_, index) => {
         const bookNumber = index + 1;
         return {
           number: bookNumber,
-          path: `./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure/Book_${bookNumber}/`,
-          frontCover: `book_${bookNumber}_front_cover.${bookNumber === 1 ? "png" : "jpg"}`,
-          funBook: `book_${bookNumber}_fun_book.png`,
+          path: `${basePath}/Book_${bookNumber}/`,
+          frontCover: extResolver(bookNumber),
           label: `Book ${bookNumber}`,
+          kind,
         };
       });
 
-      const booksRoot = document.getElementById("books");
-      booksRoot.innerHTML = books
+      const renderCards = (booksRoot, books, extraLine) => {
+        booksRoot.innerHTML = books
         .map(
           (book) => `
             <article class="book-card">
@@ -90,10 +102,52 @@
                 <a class="book-card__open" href="${book.path}">Open folder</a>
               </div>
               <ul class="book-card__files">
-                <li><span>Front cover</span><code>${book.frontCover}</code></li>
-                <li><span>Fun page</span><code>${book.funBook}</code></li>
+                <li><span>${book.kind}</span><code>${book.frontCover}</code></li>
+                ${extraLine ? `<li><span>${extraLine.label}</span><code>${extraLine.value(book.number)}</code></li>` : ""}
               </ul>
             </article>
+          `
+        )
+        .join("");
+      };
+
+      const originalAdventureBooks = makeBookCards(
+        "./LULU%20%26%20ELLIE%20STORAGE%20HUB/Original%20Adventure",
+        "Front cover",
+        20,
+        (bookNumber) => `book_${bookNumber}_front_cover.${bookNumber === 1 ? "png" : "jpg"}`
+      );
+
+      renderCards(document.getElementById("original-adventure"), originalAdventureBooks, {
+        label: "Fun page",
+        value: (bookNumber) => `book_${bookNumber}_fun_book.png`,
+      });
+
+      const codexBooks = makeBookCards(
+        "./LULU%20%26%20ELLIE%20STORAGE%20HUB/Codex",
+        "Video",
+        20,
+        (bookNumber) => `book_${bookNumber}.mp4`
+      );
+
+      renderCards(document.getElementById("codex-books"), codexBooks);
+
+      const codexGeneral = [
+        "1006720010.mp4",
+        "1024978004.mp4",
+        "12175027.mp4",
+        "188093633.mp4",
+        "193171790.mp4",
+        "300556554.mp4",
+        "44871919.mp4",
+        "465494924.mp4",
+        "567657757.mp4",
+      ];
+
+      document.getElementById("codex-general").innerHTML = codexGeneral
+        .map(
+          (file) => `
+            <a href="./LULU%20%26%20ELLIE%20STORAGE%20HUB/Codex/General/${file}">${file}</a>
           `
         )
         .join("");

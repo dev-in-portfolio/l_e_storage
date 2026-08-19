@@ -4,6 +4,13 @@ Source: ChatGPT Library folder `/Lulu and Ellie`
 
 Date prepared: 2026-08-19
 
+## Current execution status
+
+- Inventory and size classification are complete.
+- Git LFS tracking for `*.pdf` and `*.mp3` is configured on branch `l_e_storage`.
+- The under-limit source set is ready for binary transfer, but the connected GitHub write interface cannot ingest a local ChatGPT Library/container file path directly. **Do not treat the 126 under-limit binaries as uploaded yet.**
+- The 15 oversized PDFs are a separate deferred set and do not block the first-pass archive.
+
 ## First-pass target
 
 - 142 Library entries inventoried.

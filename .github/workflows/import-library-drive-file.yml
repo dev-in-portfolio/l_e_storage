@@ -1,0 +1,60 @@
+name: Import one public Drive file
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.transfer/drive-*.json'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    env:
+      TRANSFER_BRANCH: ${{ github.event.pull_request.head.ref }}
+      REPO: ${{ github.repository }}
+      TOKEN: ${{ github.token }}
+    steps:
+      - name: Import exactly one verified public Drive file
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git init .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://x-access-token:${TOKEN}@github.com/${REPO}.git"
+          git fetch --depth=1 origin "${TRANSFER_BRANCH}"
+          git checkout -B "${TRANSFER_BRANCH}" FETCH_HEAD
+
+          manifest="$(find .transfer -maxdepth 1 -type f -name 'drive-*.json' -print -quit)"
+          [ -n "$manifest" ] || { echo "No Drive transfer manifest found"; exit 0; }
+
+          python3 - "$manifest" <<'PY'
+          import hashlib, json, pathlib, subprocess, sys
+          mpath = pathlib.Path(sys.argv[1])
+          meta = json.loads(mpath.read_text())
+          out = pathlib.Path(meta['path'])
+          out.parent.mkdir(parents=True, exist_ok=True)
+          url = f"https://drive.usercontent.google.com/download?id={meta['drive_id']}&export=download&confirm=t"
+          subprocess.run([
+              'curl','-fL','--retry','3','--retry-all-errors','--connect-timeout','20',
+              '--max-time','300','-o',str(out),url
+          ], check=True)
+          size = out.stat().st_size
+          sha = hashlib.sha256(out.read_bytes()).hexdigest()
+          print(f"downloaded {size} bytes sha256={sha}")
+          if size != meta['size']:
+              raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
+          if sha != meta['sha256']:
+              raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
+          PY
+
+          path="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
+          git lfs install --local
+          git add -- "$path"
+          git rm -- "$manifest"
+          git commit -m "Import $path"
+          git push origin HEAD:"${TRANSFER_BRANCH}"

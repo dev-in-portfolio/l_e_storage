@@ -16,6 +16,7 @@ jobs:
       TRANSFER_BRANCH: ${{ github.event.pull_request.head.ref }}
       REPO: ${{ github.repository }}
       TOKEN: ${{ github.token }}
+      GIT_LFS_SKIP_SMUDGE: "1"
     steps:
       - name: Import exactly one verified public Drive file
         shell: bash

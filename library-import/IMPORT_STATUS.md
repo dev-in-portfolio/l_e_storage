@@ -1,65 +1,22 @@
 # Lulu & Ellie Library Import Status
 
-Source: ChatGPT Library folder `/Lulu and Ellie`
+Date updated: 2026-08-30
 
-Date prepared: 2026-08-19
+## Original Adventure core set
 
-## Current execution status
+- **20 of 20 full Original Adventure books are present** in `library-import/`.
+- Books 1, 11, and 16 were preserved from the existing archive.
+- Books 2–10, 12–15, and 17–20 were added from the verified Library source set.
+- Every full-book PDF is tracked through Git LFS and has a recorded source byte count and SHA-256 in `CORE_PDF_MANIFEST.md`.
+- Oversized Books 14, 19, and 20 were transferred in verified temporary chunks, reconstructed byte-for-byte, verified against the full source SHA-256, and then the temporary chunks were removed.
+- No `.transfer/` manifests or reconstruction chunks are part of the completed canonical set.
 
-- Inventory and size classification are complete.
-- Git LFS tracking for `*.pdf` and `*.mp3` is configured on branch `l_e_storage`.
-- The under-limit source set is ready for binary transfer, but the connected GitHub write interface cannot ingest a local ChatGPT Library/container file path directly. **Do not treat the 126 under-limit binaries as uploaded yet.**
-- The 15 oversized PDFs are a separate deferred set and do not block the first-pass archive.
+## Transfer workflow
 
-## First-pass target
+The repository workflow supports both direct verified Drive relays and verified chunk assembly for files above the normal single-file transport limit. Each import checks exact byte count and SHA-256 before committing the resulting LFS object.
 
-- 142 Library entries inventoried.
-- 15 PDFs exceed GitHub's normal 100 MiB single-file limit and are deferred for later handling.
-- 127 entries are below the normal GitHub limit.
-- 1 of those 127 is a confirmed byte-for-byte duplicate.
-- Therefore the clean first-pass target is **126 unique under-limit files**.
-- All four MP3 song variations are intentionally retained as separate files.
+## Broader Library inventory
 
-## Confirmed duplicate — skip one copy
+The earlier 2026-08-19 inventory covered the larger Lulu & Ellie Library beyond the Original Adventure core set. Its counts for other series/media remain a separate archive workstream and should not be read as the status of these 20 Original Adventure books.
 
-Keep:
-`Lulu_and_Ellie_Go_To_Camp_Book_8_The_Canoe_That_Sang_to_the_Moon_FINAL.pdf`
-
-Skip duplicate:
-`Lulu_and_Ellie_Go_To_Camp_Book_8_The_Canoe_That_Sang_to_the_Moon_FINAL(1).pdf`
-
-Both copies have SHA-256:
-`38ad961425664ba203ee3ca9a5f730dad9e93efee9f6200ab5e45d18432ba1e1`
-
-## Preserve all four song variations
-
-- `Lulu and Ellie Paws Up.mp3`
-- `Lulu and Ellie Paws Up (1).mp3`
-- `Lulu Ellie Portal.mp3`
-- `Lulu Ellie Portal (1).mp3`
-
-These are intentional variations and must not be deduplicated by filename similarity.
-
-## Deferred — oversized PDFs
-
-The following 15 files exceed 100 MiB and are deferred rather than blocking the rest of the import:
-
-1. `Lulu_&_Ellie_In_Space_Book9.pdf` — 153,758,294 bytes
-2. `Lulu_&_Ellie_in_Space_Book13.pdf` — 150,308,824 bytes
-3. `MysteryTails1_REPAIRED.pdf` — 149,413,924 bytes
-4. `Lulu_Ellie_Creature_Rescue_Club_Book12_The_Moonbrella_Moth_Final.pdf` — 146,872,301 bytes
-5. `Lulu_&_Ellie_In_Space_Book2.pdf` — 139,907,656 bytes
-6. `Lulu_Ellie_Go_To_Camp_Book_11_Final.pdf` — 123,942,334 bytes
-7. `Cook2.pdf` — 118,731,958 bytes
-8. `Lulu_Ellie_Creature_Rescue_Club_Book17_The_Cloudlet_Fawn_in_the_Clover_Clock_FINAL.pdf` — 118,445,646 bytes
-9. `Lulu_Ellie_Go_To_Camp_Book_10_The_Lantern_That_Pointed_Sideways_FINAL.pdf` — 116,979,589 bytes
-10. `Lulu_Ellie_Mystery_Tails_Book16_The_Case_of_the_Lantern_That_Winked_FINAL.pdf` — 116,214,908 bytes
-11. `Lulu_Ellie_Creature_Rescue_Club_Book_20_The_Moon_Moss_Mender.pdf` — 116,031,006 bytes
-12. `Lulu_Ellie_Mystery_Tails_Book19_Final.pdf` — 113,515,803 bytes
-13. `Lulu_and_Ellie_Go_To_Camp_5.pdf` — 112,974,632 bytes
-14. `Time_Tails_Book_9_The_Acorn_That_Ticked_Tomorrow_FINAL.pdf` — 112,122,758 bytes
-15. `Academy5.pdf` — 109,091,993 bytes
-
-## Repository handling
-
-The `l_e_storage` branch is configured with Git LFS patterns for `*.pdf` and `*.mp3`. The oversized list above remains explicitly deferred so it does not block the under-limit archive pass.
+The Original Adventure core set is complete.

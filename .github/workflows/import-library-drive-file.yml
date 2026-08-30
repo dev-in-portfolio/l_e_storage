@@ -1,16 +1,18 @@
-name: Import one public Drive file
+name: Import verified Drive transfer batch
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - '.transfer/drive-*.json'
+      - '.transfer/assemble-*.json'
 
 permissions:
   contents: write
 
 jobs:
   import:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     env:
       TRANSFER_BRANCH: ${{ github.event.pull_request.head.ref }}
@@ -18,7 +20,7 @@ jobs:
       TOKEN: ${{ github.token }}
       GIT_LFS_SKIP_SMUDGE: "1"
     steps:
-      - name: Import exactly one verified public Drive file
+      - name: Import and assemble verified transfer batch
         shell: bash
         run: |
           set -euo pipefail
@@ -27,35 +29,81 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote add origin "https://x-access-token:${TOKEN}@github.com/${REPO}.git"
-          git fetch --depth=1 origin "${TRANSFER_BRANCH}"
+          git fetch --depth=100 origin "${TRANSFER_BRANCH}"
           git checkout -B "${TRANSFER_BRANCH}" FETCH_HEAD
-
-          manifest="$(find .transfer -maxdepth 1 -type f -name 'drive-*.json' -print -quit)"
-          [ -n "$manifest" ] || { echo "No Drive transfer manifest found"; exit 0; }
-
-          python3 - "$manifest" <<'PY'
-          import hashlib, json, pathlib, subprocess, sys
-          mpath = pathlib.Path(sys.argv[1])
-          meta = json.loads(mpath.read_text())
-          out = pathlib.Path(meta['path'])
-          out.parent.mkdir(parents=True, exist_ok=True)
-          url = f"https://drive.usercontent.google.com/download?id={meta['drive_id']}&export=download&confirm=t"
-          subprocess.run([
-              'curl','-fL','--retry','3','--retry-all-errors','--connect-timeout','20',
-              '--max-time','300','-o',str(out),url
-          ], check=True)
-          size = out.stat().st_size
-          sha = hashlib.sha256(out.read_bytes()).hexdigest()
-          print(f"downloaded {size} bytes sha256={sha}")
-          if size != meta['size']:
-              raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
-          if sha != meta['sha256']:
-              raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
-          PY
-
-          path="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
           git lfs install --local
-          git add -- "$path"
-          git rm -- "$manifest"
-          git commit -m "Import $path"
+
+          shopt -s nullglob
+
+          for manifest in .transfer/drive-*.json; do
+            echo "Processing $manifest"
+            python3 - "$manifest" <<'PY'
+import hashlib, json, pathlib, subprocess, sys
+mpath = pathlib.Path(sys.argv[1])
+meta = json.loads(mpath.read_text())
+out = pathlib.Path(meta['path'])
+out.parent.mkdir(parents=True, exist_ok=True)
+url = f"https://drive.usercontent.google.com/download?id={meta['drive_id']}&export=download&confirm=t"
+subprocess.run([
+    'curl','-fL','--retry','3','--retry-all-errors','--connect-timeout','20',
+    '--max-time','300','-o',str(out),url
+], check=True)
+h = hashlib.sha256()
+size = 0
+with out.open('rb') as fh:
+    for block in iter(lambda: fh.read(1024 * 1024), b''):
+        h.update(block)
+        size += len(block)
+sha = h.hexdigest()
+print(f"downloaded {size} bytes sha256={sha}")
+if size != meta['size']:
+    raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
+if sha != meta['sha256']:
+    raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
+PY
+            path="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
+            git add -- "$path"
+            git rm -- "$manifest"
+          done
+
+          for manifest in .transfer/assemble-*.json; do
+            echo "Assembling $manifest"
+            python3 - "$manifest" <<'PY'
+import hashlib, json, pathlib, sys
+mpath = pathlib.Path(sys.argv[1])
+meta = json.loads(mpath.read_text())
+out = pathlib.Path(meta['path'])
+chunks = [pathlib.Path(p) for p in meta['chunks']]
+out.parent.mkdir(parents=True, exist_ok=True)
+h = hashlib.sha256()
+size = 0
+with out.open('wb') as dst:
+    for chunk in chunks:
+        if not chunk.is_file():
+            raise SystemExit(f"missing chunk: {chunk}")
+        with chunk.open('rb') as src:
+            for block in iter(lambda: src.read(1024 * 1024), b''):
+                dst.write(block)
+                h.update(block)
+                size += len(block)
+sha = h.hexdigest()
+print(f"assembled {size} bytes sha256={sha}")
+if size != meta['size']:
+    raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
+if sha != meta['sha256']:
+    raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
+PY
+            output="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
+            mapfile -t chunks < <(python3 -c 'import json,sys; print("\n".join(json.load(open(sys.argv[1]))["chunks"]))' "$manifest")
+            git add -- "$output"
+            git rm -- "$manifest" "${chunks[@]}"
+          done
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+
+          git commit -m "Process verified Lulu & Ellie transfer batch"
+          git pull --rebase origin "${TRANSFER_BRANCH}"
           git push origin HEAD:"${TRANSFER_BRANCH}"

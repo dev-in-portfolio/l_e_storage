@@ -1,0 +1,9 @@
+{
+  "path": "library-import/Lulu_&_Ellie_Book14.pdf",
+  "chunks": [
+    ".transfer/chunks/book14.part001.bin",
+    ".transfer/chunks/book14.part002.bin"
+  ],
+  "size": 119059467,
+  "sha256": "12d672165472dfc3bf9c9c2ee172269b17b71f981f39d3aa90c401c3ff5c4f63"
+}

@@ -1,9 +1,0 @@
-{
-  "path": "library-import/Lulu_&_Ellie_Book19.pdf",
-  "chunks": [
-    ".transfer/chunks/book19.part001.bin",
-    ".transfer/chunks/book19.part002.bin"
-  ],
-  "size": 150377880,
-  "sha256": "e1f38022cefd2f2d14d5bb3e5ee89984b9ae502755f596083b65cc2151e74df1"
-}

@@ -38,29 +38,29 @@ jobs:
           for manifest in .transfer/drive-*.json; do
             echo "Processing $manifest"
             python3 - "$manifest" <<'PY'
-import hashlib, json, pathlib, subprocess, sys
-mpath = pathlib.Path(sys.argv[1])
-meta = json.loads(mpath.read_text())
-out = pathlib.Path(meta['path'])
-out.parent.mkdir(parents=True, exist_ok=True)
-url = f"https://drive.usercontent.google.com/download?id={meta['drive_id']}&export=download&confirm=t"
-subprocess.run([
-    'curl','-fL','--retry','3','--retry-all-errors','--connect-timeout','20',
-    '--max-time','300','-o',str(out),url
-], check=True)
-h = hashlib.sha256()
-size = 0
-with out.open('rb') as fh:
-    for block in iter(lambda: fh.read(1024 * 1024), b''):
-        h.update(block)
-        size += len(block)
-sha = h.hexdigest()
-print(f"downloaded {size} bytes sha256={sha}")
-if size != meta['size']:
-    raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
-if sha != meta['sha256']:
-    raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
-PY
+          import hashlib, json, pathlib, subprocess, sys
+          mpath = pathlib.Path(sys.argv[1])
+          meta = json.loads(mpath.read_text())
+          out = pathlib.Path(meta['path'])
+          out.parent.mkdir(parents=True, exist_ok=True)
+          url = f"https://drive.usercontent.google.com/download?id={meta['drive_id']}&export=download&confirm=t"
+          subprocess.run([
+              'curl','-fL','--retry','3','--retry-all-errors','--connect-timeout','20',
+              '--max-time','300','-o',str(out),url
+          ], check=True)
+          h = hashlib.sha256()
+          size = 0
+          with out.open('rb') as fh:
+              for block in iter(lambda: fh.read(1024 * 1024), b''):
+                  h.update(block)
+                  size += len(block)
+          sha = h.hexdigest()
+          print(f"downloaded {size} bytes sha256={sha}")
+          if size != meta['size']:
+              raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
+          if sha != meta['sha256']:
+              raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
+          PY
             path="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
             git add -- "$path"
             git rm -- "$manifest"
@@ -69,30 +69,30 @@ PY
           for manifest in .transfer/assemble-*.json; do
             echo "Assembling $manifest"
             python3 - "$manifest" <<'PY'
-import hashlib, json, pathlib, sys
-mpath = pathlib.Path(sys.argv[1])
-meta = json.loads(mpath.read_text())
-out = pathlib.Path(meta['path'])
-chunks = [pathlib.Path(p) for p in meta['chunks']]
-out.parent.mkdir(parents=True, exist_ok=True)
-h = hashlib.sha256()
-size = 0
-with out.open('wb') as dst:
-    for chunk in chunks:
-        if not chunk.is_file():
-            raise SystemExit(f"missing chunk: {chunk}")
-        with chunk.open('rb') as src:
-            for block in iter(lambda: src.read(1024 * 1024), b''):
-                dst.write(block)
-                h.update(block)
-                size += len(block)
-sha = h.hexdigest()
-print(f"assembled {size} bytes sha256={sha}")
-if size != meta['size']:
-    raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
-if sha != meta['sha256']:
-    raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
-PY
+          import hashlib, json, pathlib, sys
+          mpath = pathlib.Path(sys.argv[1])
+          meta = json.loads(mpath.read_text())
+          out = pathlib.Path(meta['path'])
+          chunks = [pathlib.Path(p) for p in meta['chunks']]
+          out.parent.mkdir(parents=True, exist_ok=True)
+          h = hashlib.sha256()
+          size = 0
+          with out.open('wb') as dst:
+              for chunk in chunks:
+                  if not chunk.is_file():
+                      raise SystemExit(f"missing chunk: {chunk}")
+                  with chunk.open('rb') as src:
+                      for block in iter(lambda: src.read(1024 * 1024), b''):
+                          dst.write(block)
+                          h.update(block)
+                          size += len(block)
+          sha = h.hexdigest()
+          print(f"assembled {size} bytes sha256={sha}")
+          if size != meta['size']:
+              raise SystemExit(f"size mismatch: got {size}, expected {meta['size']}")
+          if sha != meta['sha256']:
+              raise SystemExit(f"sha mismatch: got {sha}, expected {meta['sha256']}")
+          PY
             output="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["path"])' "$manifest")"
             mapfile -t chunks < <(python3 -c 'import json,sys; print("\n".join(json.load(open(sys.argv[1]))["chunks"]))' "$manifest")
             git add -- "$output"
